@@ -8,7 +8,8 @@
     "build": "vite build",
     "format": "prettier --write . && eslint . --ext js,jsx --fix",
     "lint": "prettier --check . && eslint . --ext js,jsx --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
     "react": "^18.3.1",
