@@ -1,4 +1,4 @@
-import { createUser, loginUser } from '../services/users.js'
+import { createUser, getUserInfoById, loginUser } from '../services/users.js'
 import express from 'express'
 
 const router = express.Router()
@@ -23,6 +23,11 @@ router.post('/login', async (req, res) => {
       error: 'login failed, did you enter the correct username and password?',
     })
   }
+})
+
+router.get('/:id', async (req, res) => {
+  const userInfo = await getUserInfoById(req.params.id)
+  return res.status(200).json(userInfo)
 })
 
 export { router as usersRouter }
