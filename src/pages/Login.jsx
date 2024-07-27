@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate, Link } from 'react-router-dom'
 import { login } from '../api/users'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../hooks/AuthContext'
 
 export function Login() {
   const [username, setUsername] = useState('')
