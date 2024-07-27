@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
-import { useAuth } from '../hooks/AuthContext'
+import { useAuth } from '../hooks/useAuth'
 import { User } from './User'
 
 export function Header() {

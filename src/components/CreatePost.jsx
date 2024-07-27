@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { createPost } from '../api/posts'
-import { useAuth } from '../hooks/AuthContext'
+import { useAuth } from '../hooks/useAuth'
 
 export function CreatePost() {
   const [title, setTitle] = useState('')
