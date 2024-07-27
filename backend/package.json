@@ -6,7 +6,7 @@
   "scripts": {
     "format": "prettier --write . && eslint . --ext js,jsx --fix",
     "lint": "prettier --check . && eslint . --ext js,jsx --max-warnings 0",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --passWithNoTests",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
