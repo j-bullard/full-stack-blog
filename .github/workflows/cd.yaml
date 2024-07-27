@@ -20,30 +20,34 @@ jobs:
         with:
           service_account: ${{ secrets.GOOGLECLOUD_SERVICE_ACCOUNT }}
           credentials_json: ${{ secrets.GOOGLECLOUD_CREDENTIALS }}
+      - name: Get package.json version
+        id: get_version
+        run: |
+          echo "::set-output name=version::$(cat package.json | jq -r '.version')"
       - name: Build and push backend image
         uses: docker/build-push-action@v6
         with:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:${{ steps.get_version.outputs.version }}
       - id: deploy-backend
         name: Deploy backend
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: blog-backend
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:${{ github.sha }}
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:${{ steps.get_version.outputs.version }}
       - name: Build and push frontend image
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:${{ steps.get_version.outputs.version }}
           build-args: VITE_BACKEND_URL=${{ steps.deploy-backend.outputs.url }}/api/v1
       - id: deploy-frontend
         name: Deploy frontend
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: blog-frontend
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:${{ github.sha }}
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:${{ steps.get_version.outputs.version }}
