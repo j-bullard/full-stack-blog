@@ -1,19 +1,19 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { createPost } from '../api/posts'
+import { useAuth } from '../contexts/AuthContext'
 
 export function CreatePost() {
   const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
   const [contents, setContents] = useState('')
+  const [token] = useAuth()
 
   const queryClient = useQueryClient()
   const createPostMutation = useMutation({
-    mutationFn: () => createPost({ title, author, contents }),
+    mutationFn: () => createPost(token, { title, contents }),
     onSuccess: () => {
       queryClient.invalidateQueries(['posts'])
       setTitle('')
-      setAuthor('')
       setContents('')
     },
   })
@@ -23,15 +23,8 @@ export function CreatePost() {
     createPostMutation.mutate()
   }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    if (name === 'create-title') {
-      setTitle(value)
-    } else if (name === 'create-author') {
-      setAuthor(value)
-    } else {
-      setContents(value)
-    }
+  if (!token) {
+    return <div>You must be logged in to create a post.</div>
   }
 
   return (
@@ -43,22 +36,14 @@ export function CreatePost() {
           name='create-title'
           id='create-title'
           value={title}
-          onChange={handleChange}
+          onChange={(e) => setTitle(e.target.value)}
         />
       </div>
       <br />
-      <div>
-        <label htmlFor='create-author'>Author: </label>
-        <input
-          type='text'
-          name='create-author'
-          id='create-author'
-          value={author}
-          onChange={handleChange}
-        />
-      </div>
-      <br />
-      <textarea value={contents} onChange={handleChange} />
+      <textarea
+        value={contents}
+        onChange={(e) => setContents(e.target.value)}
+      />
       <br />
       <br />
       <input

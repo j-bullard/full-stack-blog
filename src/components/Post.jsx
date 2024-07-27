@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { User } from './User'
 
 export function Post({ title, contents, author }) {
   return (
@@ -8,7 +9,7 @@ export function Post({ title, contents, author }) {
       {author && (
         <em>
           <br />
-          Written by <strong>{author}</strong>
+          Written by <User id={author} />
         </em>
       )}
     </article>

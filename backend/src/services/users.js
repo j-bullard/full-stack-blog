@@ -25,3 +25,16 @@ export async function loginUser({ username, password }) {
 
   return token
 }
+
+export async function getUserInfoById(userId) {
+  try {
+    const user = await User.findById(userId)
+    if (!user) {
+      throw new Error('user not found')
+    }
+
+    return { username: user.username }
+  } catch {
+    return { username: userId }
+  }
+}
