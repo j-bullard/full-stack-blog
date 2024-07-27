@@ -9,7 +9,7 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/', (req, res) => {
-  res.send('Hello from Express!')
+  res.send('Hello SDI-26 from Express!')
 })
 
 app.use('/api/v1/posts', postsRouter)
