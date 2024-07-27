@@ -12,7 +12,7 @@ import { requireAuth } from '../middleware/jwt.js'
 
 const router = express.Router()
 
-router.get('/', requireAuth, async (req, res) => {
+router.get('/', async (req, res) => {
   const { sortBy, sortOrder, author, tag } = req.query
   const options = { sortBy, sortOrder }
 
