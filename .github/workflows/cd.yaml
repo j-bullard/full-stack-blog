@@ -26,24 +26,24 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:${{ github.sha }}
       - id: deploy-backend
         name: Deploy backend
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: blog-backend
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:latest
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:${{ github.sha }}
       - name: Build and push frontend image
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:${{ github.sha }}
           build-args: VITE_BACKEND_URL=${{ steps.deploy-backend.outputs.url }}/api/v1
       - id: deploy-frontend
         name: Deploy frontend
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: blog-frontend
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:latest
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:${{ github.sha }}
