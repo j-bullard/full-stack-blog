@@ -8,10 +8,11 @@ import {
   updatePost,
 } from '../services/posts.js'
 import express from 'express'
+import { requireAuth } from '../middleware/jwt.js'
 
 const router = express.Router()
 
-router.get('/', async (req, res) => {
+router.get('/', requireAuth, async (req, res) => {
   const { sortBy, sortOrder, author, tag } = req.query
   const options = { sortBy, sortOrder }
 
@@ -32,7 +33,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', requireAuth, async (req, res) => {
   const { id } = req.params
 
   try {
@@ -47,27 +48,27 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   try {
-    const post = await createPost(req.body)
+    const post = await createPost(req.auth.sub, req.body)
     return res.json(post)
   } catch {
     return res.status(500).end()
   }
 })
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', requireAuth, async (req, res) => {
   try {
-    const post = await updatePost(req.params.id, req.body)
+    const post = await updatePost(req.auth.sub, req.params.id, req.body)
     return res.json(post)
   } catch {
     return res.status(500).end()
   }
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', requireAuth, (req, res) => {
   try {
-    const { deletedCount } = deletePost(req.params.id)
+    const { deletedCount } = deletePost(req.auth.sub, req.params.id)
     if (deletedCount === 0) {
       return res.status(404).end()
     }
