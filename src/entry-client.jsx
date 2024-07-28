@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { Fragment } from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
@@ -8,9 +8,9 @@ const router = createBrowserRouter(routes)
 
 ReactDOM.hydrateRoot(
   document.getElementById('root'),
-  <StrictMode>
+  <Fragment>
     <App>
       <RouterProvider router={router} />
     </App>
-  </StrictMode>,
+  </Fragment>,
 )
