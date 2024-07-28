@@ -4,7 +4,7 @@ module.exports = {
 
   // set browser to true so ESLint understands browser-specific
   // globals like `document` and `window`
-  env: { browser: true, es2020: true },
+  env: { browser: true, es2020: true, node: true },
 
   // specify the ECMAScript version to use
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
